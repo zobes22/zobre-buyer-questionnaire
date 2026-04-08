@@ -470,12 +470,26 @@
     document.querySelectorAll('input[type=radio]:checked').forEach(el => { data[el.name] = el.value; });
 
     try {
-      const res = await fetch('https://formspree.io/f/xykbveze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (res.ok) {
+      const FORMSPREE = 'https://formspree.io/f/xykbveze';
+      const SHEETS = 'https://script.google.com/macros/s/AKfycbxUQN50sj4o7uwevrpaTHn-qOPeRY3IwyS1jTUslR-rgZDaiqtFLOXiyoqTVXkpF_ZV/exec';
+
+      const [formspreeRes] = await Promise.allSettled([
+        fetch(FORMSPREE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        }),
+        fetch(SHEETS, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+      ]);
+
+      const formspreeOk = formspreeRes.status === 'fulfilled' && formspreeRes.value.ok;
+
+      if (formspreeOk) {
         document.getElementById('navBar').style.display = 'none';
         document.getElementById('page-' + currentPage).style.display = 'none';
         document.querySelector('.top-bar').style.display = 'none';
