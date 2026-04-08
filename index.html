@@ -457,7 +457,7 @@
     btn.textContent = 'Submitting...';
     errorMsg.style.display = 'none';
 
-    const data = {};
+    const data = { 'Form Type': 'Buyer' };
     document.querySelectorAll('input[type=text], input[type=number], input[type=email], select, textarea').forEach(el => {
       if (el.name && el.value.trim()) data[el.name] = el.value.trim();
     });
