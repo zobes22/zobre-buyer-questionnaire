@@ -6,332 +6,489 @@
 <title>Buyer Questionnaire — Scott Zobre | KW Mid Hudson</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
-  .wrap { max-width: 680px; margin: 0 auto; }
-  .header { margin-bottom: 2rem; }
-  .header h1 { font-size: 26px; font-weight: 600; margin-bottom: 6px; }
-  .header p { font-size: 14px; color: #666; line-height: 1.6; }
-  .header .agent { margin-top: 10px; font-size: 13px; color: #888; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; padding: 0 0 3rem; }
+
+  /* Header */
+  .top-bar { background: #fff; border-bottom: 1px solid #e8e8e4; padding: 1rem 1.5rem; position: sticky; top: 0; z-index: 10; }
+  .top-bar-inner { max-width: 680px; margin: 0 auto; }
+  .agent-name { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .progress-track { background: #e8e8e4; border-radius: 4px; height: 4px; margin-bottom: 6px; }
+  .progress-fill { background: #1a1a1a; border-radius: 4px; height: 4px; transition: width 0.3s ease; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #999; }
+  .step-name { font-weight: 500; color: #666; }
+
+  /* Content */
+  .wrap { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 0; }
+
+  /* Page header */
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .page-header p { font-size: 14px; color: #666; line-height: 1.5; }
+
+  /* Section card */
   .section { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
-  .section-title { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+
+  /* Fields */
   .field { margin-bottom: 1.25rem; }
   .field:last-child { margin-bottom: 0; }
-  label.field-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #1a1a1a; }
+  label.field-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
   .sub { font-size: 12px; color: #888; margin-bottom: 8px; }
   input[type=text], input[type=number], input[type=email], select, textarea {
     width: 100%; font-size: 14px; border: 1px solid #ddd; border-radius: 8px;
-    padding: 9px 12px; background: #fafaf9; color: #1a1a1a; outline: none;
-    transition: border-color 0.15s;
+    padding: 9px 12px; background: #fafaf9; color: #1a1a1a; outline: none; transition: border-color 0.15s;
   }
   input:focus, select:focus, textarea:focus { border-color: #666; background: #fff; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Pills */
   .checkgroup { display: flex; flex-wrap: wrap; gap: 6px; }
   .check-pill { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; cursor: pointer; background: #fafaf9; transition: all 0.15s; user-select: none; }
-  .check-pill:hover { border-color: #aaa; background: #f0f0ee; }
-  .check-pill input[type=checkbox] { width: 13px; height: 13px; margin: 0; cursor: pointer; accent-color: #1a1a1a; }
+  .check-pill:hover { border-color: #aaa; }
+  .check-pill input { width: 13px; height: 13px; margin: 0; cursor: pointer; accent-color: #1a1a1a; }
   .check-pill.selected { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
   .radio-group { display: flex; flex-direction: column; gap: 6px; }
   .radio-pill { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; cursor: pointer; background: #fafaf9; transition: all 0.15s; user-select: none; }
-  .radio-pill:hover { border-color: #aaa; background: #f0f0ee; }
-  .radio-pill input[type=radio] { width: 14px; height: 14px; margin: 0; cursor: pointer; accent-color: #1a1a1a; }
+  .radio-pill:hover { border-color: #aaa; }
+  .radio-pill input { width: 14px; height: 14px; margin: 0; cursor: pointer; accent-color: #1a1a1a; }
   .radio-pill.selected { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
-  .submit-btn { width: 100%; padding: 14px; background: #1a1a1a; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 1.5rem; transition: opacity 0.15s; }
-  .submit-btn:hover { opacity: 0.85; }
-  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .success { display: none; text-align: center; padding: 3rem 2rem; background: #fff; border-radius: 12px; border: 1px solid #e8e8e4; }
-  .success .check { width: 56px; height: 56px; background: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
-  .success .check svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-  .success h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+
+  /* Navigation */
+  .nav { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .btn-back { flex: 1; padding: 13px; background: #fff; color: #1a1a1a; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .btn-back:hover { border-color: #aaa; }
+  .btn-next { flex: 2; padding: 13px; background: #1a1a1a; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
+  .btn-next:hover { opacity: 0.85; }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Success */
+  .success { display: none; text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 12px; border: 1px solid #e8e8e4; margin-top: 1.5rem; }
+  .success .check { width: 60px; height: 60px; background: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
+  .success .check svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .success h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
   .success p { color: #666; font-size: 14px; line-height: 1.6; }
+
   .error-msg { display: none; background: #fff0f0; border: 1px solid #fcc; border-radius: 8px; padding: 12px; font-size: 13px; color: #c00; margin-top: 1rem; }
-  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } body { padding: 1rem 0.75rem; } }
+
+  /* Page visibility */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="agent-name">Scott Zobre · KW Mid Hudson</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:12.5%"></div></div>
+    <div class="progress-label"><span class="step-name" id="stepName">Your info</span><span id="stepCount">Step 1 of 8</span></div>
+  </div>
+</div>
+
 <div class="wrap">
-  <div class="header">
-    <h1>Buyer questionnaire</h1>
-    <p>Help me understand exactly what you're looking for so I can build your personalized property search and set up alerts tailored to you.</p>
-    <div class="agent">Scott Zobre &nbsp;·&nbsp; Associate Real Estate Broker &nbsp;·&nbsp; KW Mid Hudson &nbsp;·&nbsp; 845-242-7016</div>
-  </div>
 
-  <div id="formWrap">
-
-  <div class="section">
-    <div class="section-title">Your info</div>
-    <div class="field row2">
-      <div><label class="field-label">First name</label><input type="text" id="firstName" name="First Name" placeholder="First"></div>
-      <div><label class="field-label">Last name</label><input type="text" id="lastName" name="Last Name" placeholder="Last"></div>
+  <!-- PAGE 1: Your info -->
+  <div class="page active" id="page-1">
+    <div class="page-header">
+      <h2>Let's start with you</h2>
+      <p>Just the basics so Scott knows who he's working with.</p>
     </div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">Email</label>
-      <input type="email" id="email" name="Email" placeholder="your@email.com">
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Budget</div>
-    <div class="field row2" style="margin-bottom:0">
-      <div><label class="field-label">Minimum price</label><input type="number" id="minPrice" name="Min Price" placeholder="e.g. 300000"></div>
-      <div><label class="field-label">Maximum price</label><input type="number" id="maxPrice" name="Max Price" placeholder="e.g. 600000"></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Property basics</div>
-    <div class="field row2">
-      <div>
-        <label class="field-label">Bedrooms (min)</label>
-        <select id="beds" name="Bedrooms"><option value="">Any</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option><option>5+</option></select>
+    <div class="section">
+      <div class="field row2">
+        <div><label class="field-label">First name</label><input type="text" name="First Name" placeholder="First"></div>
+        <div><label class="field-label">Last name</label><input type="text" name="Last Name" placeholder="Last"></div>
       </div>
-      <div>
-        <label class="field-label">Bathrooms (min)</label>
-        <select id="baths" name="Bathrooms"><option value="">Any</option><option>1+</option><option>1.5+</option><option>2+</option><option>2.5+</option><option>3+</option></select>
-      </div>
-    </div>
-    <div class="field row2">
-      <div>
-        <label class="field-label">Garage needed?</label>
-        <select id="garage" name="Garage"><option value="">No preference</option><option>Yes — 1 car</option><option>Yes — 2 car</option><option>Yes — 2+ car</option><option>No</option></select>
-      </div>
-      <div>
-        <label class="field-label">Lot / land preference</label>
-        <select id="lot" name="Lot Size"><option value="">No preference</option><option>Under 0.5 acres</option><option>0.5 – 1 acre</option><option>1 – 3 acres</option><option>3+ acres</option></select>
-      </div>
-    </div>
-    <div class="field">
-      <label class="field-label">Property condition</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Condition" value="Move-in ready only"> Move-in ready only</label>
-        <label class="radio-pill"><input type="radio" name="Condition" value="Minor cosmetic updates ok"> Minor cosmetic updates ok</label>
-        <label class="radio-pill"><input type="radio" name="Condition" value="Open to renovation / fixer-upper"> Open to renovation / fixer-upper</label>
-        <label class="radio-pill"><input type="radio" name="Condition" value="No preference"> No preference</label>
-      </div>
-    </div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">Must-haves or deal-breakers</label>
-      <div class="sub">e.g. "no condos," "needs a pool," "must have a workshop"</div>
-      <textarea id="dealbreakers" name="Must-Haves / Deal-Breakers" rows="2" placeholder="Type anything here..."></textarea>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Towns you like — Dutchess County</div>
-    <div class="sub" style="margin-bottom:10px">Select all that apply</div>
-    <div class="checkgroup">
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Beacon"> Beacon</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Poughkeepsie"> Poughkeepsie</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Hyde Park"> Hyde Park</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Rhinebeck"> Rhinebeck</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Red Hook"> Red Hook</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Millbrook"> Millbrook</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Pawling"> Pawling</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Amenia"> Amenia</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Dover"> Dover</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Fishkill"> Fishkill</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Wappingers Falls"> Wappingers Falls</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="LaGrangeville"> LaGrangeville</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Pleasant Valley"> Pleasant Valley</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Millerton"> Millerton</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Tivoli"> Tivoli</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Clinton Corners"> Clinton Corners</label>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Towns you like — Ulster County</div>
-    <div class="checkgroup">
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Kingston"> Kingston</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="New Paltz"> New Paltz</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Saugerties"> Saugerties</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Woodstock"> Woodstock</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Rosendale"> Rosendale</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Highland"> Highland</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Marlboro"> Marlboro</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Ellenville"> Ellenville</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Stone Ridge"> Stone Ridge</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Accord"> Accord</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="High Falls"> High Falls</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Gardiner"> Gardiner</label>
-    </div>
-    <div style="margin-top:10px">
-      <input type="text" name="Towns Liked (Other)" placeholder="Other towns I like...">
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Towns to exclude</div>
-    <div class="sub" style="margin-bottom:10px">Select any you want to avoid</div>
-    <div class="checkgroup">
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Beacon"> Beacon</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Poughkeepsie"> Poughkeepsie</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Hyde Park"> Hyde Park</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Rhinebeck"> Rhinebeck</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Red Hook"> Red Hook</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Millbrook"> Millbrook</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Pawling"> Pawling</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Kingston"> Kingston</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="New Paltz"> New Paltz</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Saugerties"> Saugerties</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Woodstock"> Woodstock</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Fishkill"> Fishkill</label>
-      <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Wappingers Falls"> Wappingers Falls</label>
-    </div>
-    <div style="margin-top:10px">
-      <input type="text" name="Towns Excluded (Other)" placeholder="Other towns to exclude...">
-    </div>
-    <div class="field" style="margin-top:1rem;margin-bottom:0">
-      <label class="field-label">County preference</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="County Preference" value="Dutchess only"> Dutchess County only</label>
-        <label class="radio-pill"><input type="radio" name="County Preference" value="Ulster only"> Ulster County only</label>
-        <label class="radio-pill"><input type="radio" name="County Preference" value="Both sides of the river"> Both sides of the river</label>
-        <label class="radio-pill"><input type="radio" name="County Preference" value="No preference"> No preference</label>
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Email address</label>
+        <input type="email" name="Email" placeholder="your@email.com">
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">School districts</div>
-    <div class="sub" style="margin-bottom:10px">Select preferred districts (leave blank if not a factor)</div>
-    <div class="checkgroup">
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Arlington CSD"> Arlington</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Spackenkill UFSD"> Spackenkill</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Rhinebeck CSD"> Rhinebeck</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Red Hook CSD"> Red Hook</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Millbrook CSD"> Millbrook</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Hyde Park CSD"> Hyde Park</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Beacon City SD"> Beacon</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Pawling CSD"> Pawling</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Wappingers CSD"> Wappingers</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="New Paltz CSD"> New Paltz</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Kingston City SD"> Kingston</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Onteora CSD"> Onteora</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Marlboro CSD"> Marlboro</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Wallkill CSD"> Wallkill</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Rondout Valley CSD"> Rondout Valley</label>
-      <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Saugerties CSD"> Saugerties</label>
+  <!-- PAGE 2: Budget & property basics -->
+  <div class="page" id="page-2">
+    <div class="page-header">
+      <h2>Budget & property basics</h2>
+      <p>Help Scott understand your price range and what you need in a home.</p>
     </div>
-    <div style="margin-top:10px">
-      <input type="text" name="School Districts (Other)" placeholder="Other district...">
-    </div>
-    <div class="field" style="margin-top:1rem;margin-bottom:0">
-      <label class="field-label">Any districts to avoid?</label>
-      <input type="text" name="School Districts (Excluded)" placeholder="List any school districts to exclude...">
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Commute & lifestyle</div>
-    <div class="field">
-      <label class="field-label">Work orientation</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Work Orientation" value="Commuting to NYC — need train access"> Commuting to NYC — need train access</label>
-        <label class="radio-pill"><input type="radio" name="Work Orientation" value="Commuting locally within Hudson Valley"> Commuting locally within Hudson Valley</label>
-        <label class="radio-pill"><input type="radio" name="Work Orientation" value="Work from home / remote"> Work from home / remote</label>
-        <label class="radio-pill"><input type="radio" name="Work Orientation" value="Hybrid — some NYC, some remote"> Hybrid — some NYC, some remote</label>
-        <label class="radio-pill"><input type="radio" name="Work Orientation" value="Retired / not applicable"> Retired / not applicable</label>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">Budget</div>
+      <div class="field row2">
+        <div><label class="field-label">Minimum price</label><input type="number" name="Min Price" placeholder="e.g. 300000"></div>
+        <div><label class="field-label">Maximum price</label><input type="number" name="Max Price" placeholder="e.g. 600000"></div>
       </div>
     </div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">Commute details</label>
-      <input type="text" name="Commute Details" placeholder="e.g. commute to White Plains, need I-84 access...">
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Financing</div>
-    <div class="field">
-      <label class="field-label">Financing status</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Financing Status" value="Pre-approved"> Pre-approved</label>
-        <label class="radio-pill"><input type="radio" name="Financing Status" value="Working on pre-approval"> Working on pre-approval</label>
-        <label class="radio-pill"><input type="radio" name="Financing Status" value="Cash buyer"> Cash buyer</label>
-        <label class="radio-pill"><input type="radio" name="Financing Status" value="Need to sell first"> Need to sell first to buy</label>
-        <label class="radio-pill"><input type="radio" name="Financing Status" value="Not sure yet"> Not sure yet</label>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">Bedrooms & bathrooms</div>
+      <div class="field row2">
+        <div>
+          <label class="field-label">Bedrooms (min)</label>
+          <select name="Bedrooms"><option value="">Any</option><option>1+</option><option>2+</option><option>3+</option><option>4+</option><option>5+</option></select>
+        </div>
+        <div>
+          <label class="field-label">Bathrooms (min)</label>
+          <select name="Bathrooms"><option value="">Any</option><option>1+</option><option>1.5+</option><option>2+</option><option>2.5+</option><option>3+</option></select>
+        </div>
+      </div>
+      <div class="field row2" style="margin-bottom:0">
+        <div>
+          <label class="field-label">Garage needed?</label>
+          <select name="Garage"><option value="">No preference</option><option>Yes — 1 car</option><option>Yes — 2 car</option><option>Yes — 2+ car</option><option>No</option></select>
+        </div>
+        <div>
+          <label class="field-label">Lot / land size</label>
+          <select name="Lot Size"><option value="">No preference</option><option>Under 0.5 acres</option><option>0.5–1 acre</option><option>1–3 acres</option><option>3+ acres</option></select>
+        </div>
       </div>
     </div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">Do you have a property to sell first?</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="Yes"> Yes</label>
-        <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="No"> No</label>
-        <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="Maybe"> Maybe</label>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">Condition & deal-breakers</div>
+      <div class="field">
+        <label class="field-label">Property condition</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Condition" value="Move-in ready only"> Move-in ready only</label>
+          <label class="radio-pill"><input type="radio" name="Condition" value="Minor cosmetic updates ok"> Minor cosmetic updates ok</label>
+          <label class="radio-pill"><input type="radio" name="Condition" value="Open to renovation / fixer-upper"> Open to renovation / fixer-upper</label>
+          <label class="radio-pill"><input type="radio" name="Condition" value="No preference"> No preference</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Must-haves or deal-breakers</label>
+        <div class="sub">e.g. "no condos," "needs a pool," "must have a workshop"</div>
+        <textarea name="Must-Haves / Deal-Breakers" rows="2" placeholder="Type anything here..."></textarea>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Timeline & motivation</div>
-    <div class="field">
-      <label class="field-label">When are you looking to move?</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Timeline" value="ASAP"> As soon as possible</label>
-        <label class="radio-pill"><input type="radio" name="Timeline" value="1-3 months"> 1–3 months</label>
-        <label class="radio-pill"><input type="radio" name="Timeline" value="3-6 months"> 3–6 months</label>
-        <label class="radio-pill"><input type="radio" name="Timeline" value="6-12 months"> 6–12 months</label>
-        <label class="radio-pill"><input type="radio" name="Timeline" value="Just exploring"> Just exploring for now</label>
-      </div>
+  <!-- PAGE 3: Location -->
+  <div class="page" id="page-3">
+    <div class="page-header">
+      <h2>Location preferences</h2>
+      <p>Tell Scott which towns and counties feel right — and which don't.</p>
     </div>
-    <div class="field">
-      <label class="field-label">Any lease or timing constraints?</label>
-      <input type="text" name="Timing Constraints" placeholder="e.g. lease ends July 2025, must close by...">
-    </div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">What's driving the purchase?</label>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Dutchess County — towns I like</div>
       <div class="checkgroup">
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Renting, ready to buy"> Renting, ready to buy</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Upsizing"> Upsizing</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Downsizing"> Downsizing</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Relocating for work"> Relocating for work</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Lifestyle change"> Lifestyle change</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Investment / rental income"> Investment / rental</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Second / weekend home"> Second / weekend home</label>
-        <label class="check-pill"><input type="checkbox" name="Motivation" value="Family needs"> Family needs</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Beacon"> Beacon</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Poughkeepsie"> Poughkeepsie</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Hyde Park"> Hyde Park</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Rhinebeck"> Rhinebeck</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Red Hook"> Red Hook</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Millbrook"> Millbrook</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Pawling"> Pawling</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Amenia"> Amenia</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Dover"> Dover</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Fishkill"> Fishkill</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Wappingers Falls"> Wappingers Falls</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="LaGrangeville"> LaGrangeville</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Pleasant Valley"> Pleasant Valley</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Millerton"> Millerton</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Tivoli"> Tivoli</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Clinton Corners"> Clinton Corners</label>
       </div>
-      <div style="margin-top:8px">
-        <input type="text" name="Motivation (Other)" placeholder="Other reason...">
+    </div>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Ulster County — towns I like</div>
+      <div class="checkgroup">
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Kingston"> Kingston</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="New Paltz"> New Paltz</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Saugerties"> Saugerties</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Woodstock"> Woodstock</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Rosendale"> Rosendale</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Highland"> Highland</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Marlboro"> Marlboro</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Ellenville"> Ellenville</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Stone Ridge"> Stone Ridge</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Accord"> Accord</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="High Falls"> High Falls</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Liked" value="Gardiner"> Gardiner</label>
+      </div>
+      <div style="margin-top:10px"><input type="text" name="Towns Liked (Other)" placeholder="Other towns I like..."></div>
+    </div>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Towns to exclude</div>
+      <div class="checkgroup">
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Beacon"> Beacon</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Poughkeepsie"> Poughkeepsie</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Hyde Park"> Hyde Park</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Rhinebeck"> Rhinebeck</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Red Hook"> Red Hook</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Millbrook"> Millbrook</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Pawling"> Pawling</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Kingston"> Kingston</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="New Paltz"> New Paltz</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Saugerties"> Saugerties</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Woodstock"> Woodstock</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Fishkill"> Fishkill</label>
+        <label class="check-pill"><input type="checkbox" name="Towns Excluded" value="Wappingers Falls"> Wappingers Falls</label>
+      </div>
+      <div style="margin-top:10px"><input type="text" name="Towns Excluded (Other)" placeholder="Other towns to exclude..."></div>
+    </div>
+    <div class="section">
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">County preference</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="County Preference" value="Dutchess only"> Dutchess County only</label>
+          <label class="radio-pill"><input type="radio" name="County Preference" value="Ulster only"> Ulster County only</label>
+          <label class="radio-pill"><input type="radio" name="County Preference" value="Both sides of the river"> Both sides of the river</label>
+          <label class="radio-pill"><input type="radio" name="County Preference" value="No preference"> No preference</label>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Property alerts</div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">How would you like to receive property options?</label>
-      <div class="radio-group">
-        <label class="radio-pill"><input type="radio" name="Alert Preference" value="Automatic alerts as they hit the market"> Send me automatic alerts as they hit the market</label>
-        <label class="radio-pill"><input type="radio" name="Alert Preference" value="Hand-picked selections from Scott"> I prefer hand-picked selections from Scott</label>
-        <label class="radio-pill"><input type="radio" name="Alert Preference" value="Both — automatic plus hand-picked"> Both — automatic alerts plus Scott's picks</label>
-        <label class="radio-pill"><input type="radio" name="Alert Preference" value="Not ready yet"> I'm not ready for that yet</label>
+  <!-- PAGE 4: School districts -->
+  <div class="page" id="page-4">
+    <div class="page-header">
+      <h2>School districts</h2>
+      <p>Select any preferred districts, or skip if schools aren't a factor for you.</p>
+    </div>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Preferred districts</div>
+      <div class="checkgroup">
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Arlington CSD"> Arlington</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Spackenkill UFSD"> Spackenkill</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Rhinebeck CSD"> Rhinebeck</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Red Hook CSD"> Red Hook</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Millbrook CSD"> Millbrook</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Hyde Park CSD"> Hyde Park</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Beacon City SD"> Beacon</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Pawling CSD"> Pawling</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Wappingers CSD"> Wappingers</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="New Paltz CSD"> New Paltz</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Kingston City SD"> Kingston</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Onteora CSD"> Onteora</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Marlboro CSD"> Marlboro</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Wallkill CSD"> Wallkill</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Rondout Valley CSD"> Rondout Valley</label>
+        <label class="check-pill"><input type="checkbox" name="School Districts (Preferred)" value="Saugerties CSD"> Saugerties</label>
+      </div>
+      <div style="margin-top:10px"><input type="text" name="School Districts (Other)" placeholder="Other district..."></div>
+    </div>
+    <div class="section">
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Any districts to avoid?</label>
+        <input type="text" name="School Districts (Excluded)" placeholder="List any school districts to exclude...">
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Anything else</div>
-    <div class="field" style="margin-bottom:0">
-      <label class="field-label">Additional notes or questions for Scott</label>
-      <textarea name="Additional Notes" rows="3" placeholder="Anything else you'd like Scott to know..."></textarea>
+  <!-- PAGE 5: Commute & lifestyle -->
+  <div class="page" id="page-5">
+    <div class="page-header">
+      <h2>Commute & lifestyle</h2>
+      <p>Where you work shapes where you should live.</p>
+    </div>
+    <div class="section">
+      <div class="field">
+        <label class="field-label">Work orientation</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Work Orientation" value="Commuting to NYC — need train access"> Commuting to NYC — need train access</label>
+          <label class="radio-pill"><input type="radio" name="Work Orientation" value="Commuting locally within Hudson Valley"> Commuting locally within Hudson Valley</label>
+          <label class="radio-pill"><input type="radio" name="Work Orientation" value="Work from home / remote"> Work from home / remote</label>
+          <label class="radio-pill"><input type="radio" name="Work Orientation" value="Hybrid — some NYC, some remote"> Hybrid — some NYC, some remote</label>
+          <label class="radio-pill"><input type="radio" name="Work Orientation" value="Retired / not applicable"> Retired / not applicable</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Any commute details?</label>
+        <input type="text" name="Commute Details" placeholder="e.g. commute to White Plains, need I-84 access...">
+      </div>
     </div>
   </div>
 
-  <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit questionnaire</button>
-  <div class="error-msg" id="errorMsg">Something went wrong — please try again or call Scott at 845-242-7016.</div>
-
+  <!-- PAGE 6: Financing & timeline -->
+  <div class="page" id="page-6">
+    <div class="page-header">
+      <h2>Financing & timeline</h2>
+      <p>This helps Scott understand how ready you are and how quickly to move.</p>
+    </div>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">Financing</div>
+      <div class="field">
+        <label class="field-label">Financing status</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Financing Status" value="Pre-approved"> Pre-approved</label>
+          <label class="radio-pill"><input type="radio" name="Financing Status" value="Working on pre-approval"> Working on pre-approval</label>
+          <label class="radio-pill"><input type="radio" name="Financing Status" value="Cash buyer"> Cash buyer</label>
+          <label class="radio-pill"><input type="radio" name="Financing Status" value="Need to sell first"> Need to sell first to buy</label>
+          <label class="radio-pill"><input type="radio" name="Financing Status" value="Not sure yet"> Not sure yet</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Do you have a property to sell first?</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="Yes"> Yes</label>
+          <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="No"> No</label>
+          <label class="radio-pill"><input type="radio" name="Needs to Sell First" value="Maybe"> Maybe</label>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-label" style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;">Timeline</div>
+      <div class="field">
+        <label class="field-label">When are you looking to move?</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Timeline" value="ASAP"> As soon as possible</label>
+          <label class="radio-pill"><input type="radio" name="Timeline" value="1-3 months"> 1–3 months</label>
+          <label class="radio-pill"><input type="radio" name="Timeline" value="3-6 months"> 3–6 months</label>
+          <label class="radio-pill"><input type="radio" name="Timeline" value="6-12 months"> 6–12 months</label>
+          <label class="radio-pill"><input type="radio" name="Timeline" value="Just exploring"> Just exploring for now</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Any lease or timing constraints?</label>
+        <input type="text" name="Timing Constraints" placeholder="e.g. lease ends July 2025, must close by...">
+      </div>
+    </div>
   </div>
 
+  <!-- PAGE 7: Motivation & alerts -->
+  <div class="page" id="page-7">
+    <div class="page-header">
+      <h2>Motivation & property alerts</h2>
+      <p>Help Scott understand what's driving the search and how you'd like to receive listings.</p>
+    </div>
+    <div class="section">
+      <div class="field">
+        <label class="field-label">What's driving the purchase?</label>
+        <div class="sub">Select all that apply</div>
+        <div class="checkgroup">
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Renting, ready to buy"> Renting, ready to buy</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Upsizing"> Upsizing</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Downsizing"> Downsizing</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Relocating for work"> Relocating for work</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Lifestyle change"> Lifestyle change</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Investment / rental income"> Investment / rental</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Second / weekend home"> Second / weekend home</label>
+          <label class="check-pill"><input type="checkbox" name="Motivation" value="Family needs"> Family needs</label>
+        </div>
+        <div style="margin-top:8px"><input type="text" name="Motivation (Other)" placeholder="Other reason..."></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">How would you like to receive property options?</label>
+        <div class="radio-group">
+          <label class="radio-pill"><input type="radio" name="Alert Preference" value="Automatic alerts as they hit the market"> Send me automatic alerts as they hit the market</label>
+          <label class="radio-pill"><input type="radio" name="Alert Preference" value="Hand-picked selections from Scott"> I prefer hand-picked selections from Scott</label>
+          <label class="radio-pill"><input type="radio" name="Alert Preference" value="Both — automatic plus hand-picked"> Both — automatic alerts plus Scott's picks</label>
+          <label class="radio-pill"><input type="radio" name="Alert Preference" value="Not ready yet"> I'm not ready for that yet</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: Final notes -->
+  <div class="page" id="page-8">
+    <div class="page-header">
+      <h2>Almost done!</h2>
+      <p>Anything else Scott should know before he starts building your search?</p>
+    </div>
+    <div class="section">
+      <div class="field" style="margin-bottom:0">
+        <label class="field-label">Additional notes or questions for Scott</label>
+        <textarea name="Additional Notes" rows="4" placeholder="Anything else you'd like Scott to know..."></textarea>
+      </div>
+    </div>
+    <div class="error-msg" id="errorMsg">Something went wrong — please try again or call Scott at 845-242-7016.</div>
+  </div>
+
+  <!-- Navigation buttons -->
+  <div class="nav" id="navBar">
+    <button class="btn-back" id="btnBack" onclick="goBack()" style="display:none">Back</button>
+    <button class="btn-next" id="btnNext" onclick="goNext()">Next →</button>
+  </div>
+
+  <!-- Success screen -->
   <div class="success" id="successMsg">
-    <div class="check">
-      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-    </div>
+    <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
     <h2>Thanks — Scott will be in touch soon!</h2>
     <p>Your answers have been received. Scott will use these to build your personalized property search and set up alerts if you opted in.</p>
     <p style="margin-top:12px">Questions in the meantime? Call or text: <strong>845-242-7016</strong></p>
   </div>
+
 </div>
 
 <script>
+  const totalPages = 8;
+  let currentPage = 1;
+
+  const stepNames = [
+    'Your info',
+    'Budget & property basics',
+    'Location preferences',
+    'School districts',
+    'Commute & lifestyle',
+    'Financing & timeline',
+    'Motivation & alerts',
+    'Final notes'
+  ];
+
+  function updateUI() {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + currentPage).classList.add('active');
+    document.getElementById('progressFill').style.width = (currentPage / totalPages * 100) + '%';
+    document.getElementById('stepName').textContent = stepNames[currentPage - 1];
+    document.getElementById('stepCount').textContent = 'Step ' + currentPage + ' of ' + totalPages;
+    document.getElementById('btnBack').style.display = currentPage > 1 ? 'block' : 'none';
+    document.getElementById('btnNext').textContent = currentPage === totalPages ? 'Submit questionnaire' : 'Next →';
+    window.scrollTo(0, 0);
+  }
+
+  function goBack() {
+    if (currentPage > 1) { currentPage--; updateUI(); }
+  }
+
+  async function goNext() {
+    if (currentPage < totalPages) {
+      currentPage++;
+      updateUI();
+    } else {
+      await submitForm();
+    }
+  }
+
+  async function submitForm() {
+    const btn = document.getElementById('btnNext');
+    const errorMsg = document.getElementById('errorMsg');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    errorMsg.style.display = 'none';
+
+    const data = {};
+    document.querySelectorAll('input[type=text], input[type=number], input[type=email], select, textarea').forEach(el => {
+      if (el.name && el.value.trim()) data[el.name] = el.value.trim();
+    });
+    const checkboxGroups = {};
+    document.querySelectorAll('input[type=checkbox]:checked').forEach(el => {
+      if (!checkboxGroups[el.name]) checkboxGroups[el.name] = [];
+      checkboxGroups[el.name].push(el.value);
+    });
+    Object.keys(checkboxGroups).forEach(k => { data[k] = checkboxGroups[k].join(', '); });
+    document.querySelectorAll('input[type=radio]:checked').forEach(el => { data[el.name] = el.value; });
+
+    try {
+      const res = await fetch('https://formspree.io/f/xykbveze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        document.getElementById('navBar').style.display = 'none';
+        document.getElementById('page-' + currentPage).style.display = 'none';
+        document.querySelector('.top-bar').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+        window.scrollTo(0, 0);
+      } else { throw new Error(); }
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = 'Submit questionnaire';
+      errorMsg.style.display = 'block';
+    }
+  }
+
   document.querySelectorAll('.check-pill').forEach(pill => {
     pill.addEventListener('change', () => {
       pill.classList.toggle('selected', pill.querySelector('input').checked);
@@ -346,50 +503,7 @@
     });
   });
 
-  async function submitForm() {
-    const btn = document.getElementById('submitBtn');
-    const errorMsg = document.getElementById('errorMsg');
-    btn.disabled = true;
-    btn.textContent = 'Submitting...';
-    errorMsg.style.display = 'none';
-
-    const form = document.getElementById('formWrap');
-    const data = {};
-
-    form.querySelectorAll('input[type=text], input[type=number], input[type=email], select, textarea').forEach(el => {
-      if (el.name && el.value) data[el.name] = el.value;
-    });
-
-    const checkboxGroups = {};
-    form.querySelectorAll('input[type=checkbox]:checked').forEach(el => {
-      if (!checkboxGroups[el.name]) checkboxGroups[el.name] = [];
-      checkboxGroups[el.name].push(el.value);
-    });
-    Object.keys(checkboxGroups).forEach(k => { data[k] = checkboxGroups[k].join(', '); });
-
-    form.querySelectorAll('input[type=radio]:checked').forEach(el => {
-      data[el.name] = el.value;
-    });
-
-    try {
-      const res = await fetch('https://formspree.io/f/xykbveze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (res.ok) {
-        document.getElementById('formWrap').style.display = 'none';
-        document.getElementById('successMsg').style.display = 'block';
-        window.scrollTo(0, 0);
-      } else {
-        throw new Error('Server error');
-      }
-    } catch(e) {
-      btn.disabled = false;
-      btn.textContent = 'Submit questionnaire';
-      errorMsg.style.display = 'block';
-    }
-  }
+  updateUI();
 </script>
 </body>
 </html>
